@@ -9,6 +9,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import "./styles.css";
 import { MessageBox } from "../views/components/MessageBox/MessageBox.js";
 import "../views/components/MessageBox/MessageBox.css";
+import { Graph } from "./Graph";
 let mqtt = require("mqtt");
 let { Home } = require("../views/pages/Home.js");
 let { Levitation } = require("../views/pages/Levitation.js");
@@ -37,10 +38,20 @@ const options = {
 let client = mqtt.connect(url, options);
 
 function ServerReceive() {
+  console.log("re-rendered SERVERRECEIVE");
+  const labels = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+  ];
   function play(sound) {
     new Audio(sound).play();
   }
   const data = useRef({ errors: [], messages: [] });
+  const plotData = useRef({
+    ems1_gaps: [],
+    ems2_gaps: [],
+    ems3_gaps: [],
+    ems4_gaps: [],
+  });
   const [isError, setIsError] = useState(true);
   const [message1, setMessage1] = useState("");
   const [message2, setMessage2] = useState("");
@@ -111,6 +122,7 @@ function ServerReceive() {
   const [message67, setMessage67] = useState("");
   const [message68, setMessage68] = useState("");
   const [timer, setTimer] = useState(0);
+  const [plotCount, setPlotCount] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -168,18 +180,19 @@ function ServerReceive() {
           // VELOCITY AND POSITION (AND PRESSURE AND REED)
           case "1":
             setMessage51(message.slice(-1).toString());
-            setMessage52(message.slice(-2,-1).toString());
-            setMessage53(message.slice(-3,-2).toString());
-            setMessage54(message.slice(-4,-3).toString());
-            setMessage5((256*parseInt(message.slice(13,16)) + parseInt(message.slice(16,19))).toString());
+            setMessage52(message.slice(-2, -1).toString());
+            setMessage53(message.slice(-3, -2).toString());
+            setMessage54(message.slice(-4, -3).toString());
+            //setMessage5((256*parseInt(message.slice(18,21)) + parseInt(message.slice(22,26))).toString());
             //setMessage5(message.slice(18,21).toString());
-            setMessage4((256*parseInt(message.slice(7,10)) + parseInt(message.slice(10,13))).toString());
-            setMessage55(message.slice(1,4).toString());
-            setMessage56(message.slice(4,7).toString());
+            //setMessage4((256*parseInt(message.slice(10,13)) + parseInt(message.slice(14,17))).toString());
+            setMessage55(message.slice(2, 5).toString());
+            setMessage56(message.slice(6, 9).toString());
             break;
           
           // IPM DATA
           case "0":
+
             // BUSBAR VOLTAGE
             setMessage8((256*parseInt(message.slice(1,4)) + parseInt(message.slice(4,7))).toString());
 
@@ -308,6 +321,7 @@ function ServerReceive() {
             break;
         }
       }
+      
       if (topic === "/TAH/fault") {
         setMessage21(message.toString());
         data.errors = data.errors
@@ -316,6 +330,30 @@ function ServerReceive() {
         console.log(data.errors);
         setIsError(true);
         play(errsound);
+      }
+      if (topic === "gapTest1") {
+        plotData.ems1_gaps = plotData.ems1_gaps
+          ? plotData.ems1_gaps.length < labels.length
+            ? [...plotData.ems1_gaps, message.toString()]
+            : [
+                plotData.ems1_gaps[plotData.ems1_gaps.length - 2],
+                plotData.ems1_gaps[plotData.ems1_gaps.length - 1],
+                message.toString(),
+              ]
+          : [message.toString()];
+        setPlotCount(plotData.ems1_gaps.length);
+      }
+      if (topic === "gapTest2") {
+        plotData.ems2_gaps = plotData.ems2_gaps
+          ? plotData.ems2_gaps.length < labels.length
+            ? [...plotData.ems2_gaps, message.toString()]
+            : [
+                plotData.ems2_gaps[plotData.ems2_gaps.length - 2],
+                plotData.ems2_gaps[plotData.ems2_gaps.length - 1],
+                message.toString(),
+              ]
+          : [message.toString()];
+        setPlotCount(plotData.ems2_gaps.length);
       }
       if (topic === "/TAH/PingResponse") {
         setMessage22(message.toString());
@@ -326,7 +364,6 @@ function ServerReceive() {
             ]
           : [{ date: new Date(), message: message.toString() }];
         console.log(data.messages);
-        //setIsError(false);
         play(msgsound);
       }
     });
@@ -502,16 +539,14 @@ function ServerReceive() {
                   temp1: message57,
                   temp2: message58,
                 }}
-                minvolt={getMinimumNumber([
-                  message24,
-                  message27,
-                  message30,
-                  message33,
-                  message36,
-                  message39,
-                  message42,
-                  message45,
-                ])}
+              />
+            </Route>
+            <Route exact path="/data/plot">
+              <Graph
+                client={client}
+                gapData={{ ems1: plotData.ems1_gaps, ems2: plotData.ems2_gaps }}
+                labels={labels}
+                plotCount={plotCount}
               />
             </Route>
           </Col>
