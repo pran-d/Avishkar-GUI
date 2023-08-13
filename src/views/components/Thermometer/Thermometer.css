@@ -1,0 +1,22 @@
+.thermometer {
+  margin: auto;
+}
+
+.thermometer__bg-color,
+.thermometer__draw-b {
+  opacity: 0.8 !important;
+}
+
+.thermometer__draw-b::before,
+.thermometer__draw-b::after {
+  background: #110582 !important;
+}
+.thermometer__bg-color {
+  background: linear-gradient(#f44336, #8bc34a, #110582) !important;
+}
+
+.thermometer__draw-a,
+.thermometer__draw-a::before,
+.thermometer__draw-a::after {
+  background-color: rgb(65, 62, 62) !important;
+}

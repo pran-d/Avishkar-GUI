@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Exo:wght@400;500;600;700;800;900&display=swap");
+
+/* .progress-div {
+  background-color: rgba(213, 29, 29, 0);
+  border-radius: 0.5rem;
+} */
+
+.white-text {
+  color: white;
+}
+.pod-lev {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  /* transition: 0.1s ease; */
+  /* box-shadow: inset 2px 2px 2px 2px rgba(40, 4, 132, 1); */
+  box-shadow: inset 0 0 0 4px rgb(13, 13, 113);
+}
+
+.center {
+  text-align: center;
+}

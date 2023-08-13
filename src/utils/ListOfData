@@ -1,0 +1,25 @@
+Topic 1. /TAH/BusData:
+1st digit: (0-9) - data code 
+followed by 24 characters (8 bytes*3 digits representing each byte)
+
+Permanent IDs:
+0 - Inverter/Rotary       
+1 - IR Velocity     (1st byte: Pressure1, 2nd byte: Pressure2, 3+4: Velocity, 5+6: Position, next 4 digits: 4 reed sensors, last byte: IR sensor error flag)
+2 - Front Vertical gap	  (1st byte: before decimal, 2nd byte: after decimal, 1+2: gap sensor 1, 3+4 gap sensor 2, 5+6: current sensor 1, 7+8: current sensor 2)
+3 - Back Vertical gap	  (" ")
+4 - Front Lateral gap	  (" ")
+5 - Back Lateral Gap      (" ")
+6 - BMS
+7 - MQTT
+8 - Pressure
+9 - Reed
+
+
+Topic 2. /TAH/BMSdataRx
+
+Topic 3. /TAH/state
+Topic 4. /TAH/fault
+Topic 5. /TAH/PingResponse
+
+
+IF PING RESPONSE DOESN'T COME FOR 3 SECONDS THEN SHOW ERROR

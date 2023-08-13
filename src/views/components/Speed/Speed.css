@@ -1,0 +1,32 @@
+.parent {
+  /* width: 100%; */
+  position: relative;
+  min-height: 140px;
+}
+
+.image1 {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0rem;
+  z-index: 1;
+}
+
+.image2 {
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0rem;
+  transform-origin: center center;
+  /* transform: rotate(240deg); */
+  /* 0 to 240 degrees */
+}
+
+.overlay {
+  font-size: 0.8rem;
+  color: rgb(38, 186, 38);
+  position: relative;
+  top: 6.5rem;
+  z-index: 1;
+}

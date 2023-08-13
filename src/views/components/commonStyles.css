@@ -1,0 +1,44 @@
+.sub-section {
+  box-shadow: 1px 1px 2px rgba(64, 68, 76, 0.3),
+    -1px -1px 2px rgba(18, 20, 22, 0.5),
+    inset -3px 3px 6px rgba(18, 20, 22, 0.2),
+    inset 3px -3px 6px rgba(18, 20, 22, 0.2),
+    inset -3px -3px 6px rgba(64, 68, 76, 0.9),
+    inset 3px 3px 8px rgba(18, 20, 22, 0.9);
+  border-radius: 1rem;
+  padding: 2.5rem;
+  text-align: center;
+  font-family: "Chakra Petch", sans-serif !important;
+  background-color: #292c31 !important;
+  transition: 0.2s ease;
+}
+
+.sub-section:hover {
+  box-shadow: inset 0 8px 16px 0 rgba(0, 0, 0, 0.8);
+}
+
+.sub-sub-section {
+  box-shadow: 1px 1px 2px rgba(64, 68, 76, 0.3),
+    -1px -1px 2px rgba(18, 20, 22, 0.5),
+    inset -3px 3px 6px rgba(18, 20, 22, 0.2),
+    inset 3px -3px 6px rgba(18, 20, 22, 0.2),
+    inset -3px -3px 6px rgba(64, 68, 76, 0.9),
+    inset 3px 3px 8px rgba(18, 20, 22, 0.9);
+  margin: 0.5rem 1.5rem 1rem 1.5rem !important;
+  border-radius: 1rem !important;
+  background-color: #333333;
+  padding: 1.5rem 0rem 1rem 0rem !important;
+}
+
+body h4 {
+  font-size: large;
+}
+
+.mp-0 {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.normal-wt th {
+  font-weight: normal !important;
+}

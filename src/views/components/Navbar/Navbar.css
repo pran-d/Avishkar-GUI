@@ -1,0 +1,39 @@
+.menu-button {
+  font-size: 30px;
+  color: white;
+}
+
+.menu-button:hover {
+  color: rgb(120, 118, 118);
+  cursor: pointer;
+}
+
+.btn-white button {
+  filter: invert(1);
+}
+/* 
+.nav-link {
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid rgb(225, 225, 225, 0.6);
+  color: white !important;
+  border-radius: 2px;
+  text-decoration: none !important;
+}
+
+.nav-link div {
+  padding: 1rem;
+}
+
+.nav-link:hover {
+  background-color: rgba(40, 40, 40);
+  transform: translateX(15px);
+} */
+
+/* .offcanvas-body {
+  padding: 0px !important;
+} */
+/* 
+.home-button:hover {
+  color: rgb(120, 118, 118) !important;
+} */

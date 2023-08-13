@@ -1,0 +1,48 @@
+.cmd-btn {
+  background-color: #484b51 !important;
+  box-shadow: 1px 1px 2px rgba(64, 68, 76, 0.3),
+    -1px -1px 2px rgba(18, 20, 22, 0.5),
+    inset -3px 3px 6px rgba(18, 20, 22, 0.2),
+    inset 3px -3px 6px rgba(18, 20, 22, 0.2) !important;
+  border-radius: 1rem !important;
+  text-align: center;
+  width: 80%;
+  border: none !important;
+  margin: 0.3rem 1rem;
+}
+
+.cmd-btn:hover {
+  background-color: rgb(44, 44, 44) !important;
+}
+
+.cmd-btn:focus {
+  background-color: rgb(0, 71, 0) !important;
+}
+
+.dis {
+  background-color: rgb(56, 56, 56) !important;
+  color: white;
+  opacity: 0.6;
+}
+
+.nav-link {
+  text-align: center;
+  background-color: rgba(30, 30, 30);
+  box-shadow: 1px 1px 2px rgba(64, 68, 76, 0.3),
+    -1px -1px 2px rgba(18, 20, 22, 0.5),
+    inset -3px 3px 6px rgba(18, 20, 22, 0.2),
+    inset 3px -3px 6px rgba(18, 20, 22, 0.2);
+  color: white !important;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  text-decoration: none !important;
+}
+
+.nav-link div {
+  padding: 0.6rem;
+}
+
+.nav-link:hover {
+  background-color: #3a3d42;
+  transform: translateX(15px);
+}

@@ -1,0 +1,31 @@
+.bg-img {
+  height: 200%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: grid;
+  place-items: center;
+}
+
+.small-text {
+  font-size: small;
+}
+
+.top {
+  margin-top: -1rem !important;
+}
+
+.bottom {
+  margin-top: 2rem !important;
+}
+
+.heading {
+  margin-top: 10px !important;
+  margin-bottom: 25px;
+  text-align: center;
+  color: white;
+}
+
+.white-text {
+  color: white;
+}

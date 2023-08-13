@@ -1,0 +1,45 @@
+{
+  "name": "mqtt-trial-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts --max_old_space_size=8128 start",
+    "build": "webpack --config=webpack.config.js",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "framer-motion": "^4.1.17",
+    "mqtt": "^4.3.7",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.6.0",
+    "react-bootstrap-icons": "^1.10.2",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
+    "react-scripts": "3.4.1",
+    "react-thermometer": "^0.0.3",
+    "react-thermometer-component": "^1.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "volta": {
+    "node": "16.13.1"
+  },
+  "devDependencies": {
+    "electron": "^24.3.1"
+  }
+}
