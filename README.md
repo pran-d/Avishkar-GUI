@@ -4,4 +4,5 @@ To run this project, first clone the repository. Then, run the following command
 
 1. `npm install`
 2. `npm run start`
+   
 Note that for MQTT data to be received, the Mosquitto broker should be running locally with an active Websockets listener port (1884).
