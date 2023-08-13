@@ -109,18 +109,6 @@ function ServerReceive() {
   const [message54, setMessage54] = useState("");
   const [message55, setMessage55] = useState("");
   const [message56, setMessage56] = useState("");
-  const [message57, setMessage57] = useState("");
-  const [message58, setMessage58] = useState("");
-  const [message59, setMessage59] = useState("");
-  const [message60, setMessage60] = useState("");
-  const [message61, setMessage61] = useState("");
-  const [message62, setMessage62] = useState("");
-  const [message63, setMessage63] = useState("");
-  const [message64, setMessage64] = useState("");
-  const [message65, setMessage65] = useState("");
-  const [message66, setMessage66] = useState("");
-  const [message67, setMessage67] = useState("");
-  const [message68, setMessage68] = useState("");
   const [timer, setTimer] = useState(0);
   const [plotCount, setPlotCount] = useState(0);
 
@@ -148,27 +136,89 @@ function ServerReceive() {
     return Math.min(...arr);
   };
 
-  /** MAPPING FOR CAN IDs AND MQTT MESSAGE ENCODING **/
-/*
- Permanent IDs:
- 0 - Inverter/Rotary       Send 0x013, Recv 0x011
- 1 - IR Velocity           Send 0x012, Recv 0x015
- 2 - Front Vertical gap    Send 0x021, Recv 0x010
- 3 - Back Vertical gap     Send 0x019, Recv 0x017
- 4 - Front Lateral gap     Send 0x023, Recv 0x020
- 5 - Back Lateral Gap      Send 0x025, Recv 0x022
- 6 - BMS                   Send N/A, Recv N/A
- 7 - MQTT                  Send N/A, Recv N/A
- 8 - Pressure              Send N/A, Recv N/A
- 9 - Reed                  Send N/A, Recv N/A
- */
   client.on("connect", function () {
     console.log("Connected");
     [
       "/TAH/BusData",
+      "/TAH/IRVelDataRx",
       "/TAH/PingResponse",
+      "/TAH/RotaryDataRx",
+      "position",
+      "emsTemp",
+      "limTemp",
+      "busbarVoltage",
+      "VLev_cursen_1",
+      "VLev_cursen_2",
+      "VLev_cursen_3",
+      "VLev_cursen_4",
+      "/TAH/VGapFDataRx",
+      "/TAH/LGapFDataRx",
+      "VLev_gapsen_1",
+      "VLev_gapsen_2",
+      "VLev_gapsen_3",
+      "VLev_gapsen_4",
+      "VLev_tempsen_1",
+      "VLev_tempsen_2",
+      "VLev_tempsen_3",
+      "VLev_tempsen_4",
       "/TAH/fault",
       "/TAH/state",
+      "bp1_current",
+      "bp1_voltage",
+      "bp1_max_volt",
+      "bp1_min_volt",
+      "bp1_charge",
+      "bp2_current",
+      "bp2_voltage",
+      "bp2_max_volt",
+      "bp2_min_volt",
+      "bp2_charge",
+      "bp3_current",
+      "bp3_voltage",
+      "bp3_max_volt",
+      "bp3_min_volt",
+      "bp3_charge",
+      "bp4_current",
+      "bp4_voltage",
+      "bp4_max_volt",
+      "bp4_min_volt",
+      "bp4_charge",
+      "bp5_current",
+      "bp5_voltage",
+      "bp5_max_volt",
+      "bp5_min_volt",
+      "bp5_charge",
+      "bp6_current",
+      "bp6_voltage",
+      "bp6_max_volt",
+      "bp6_min_volt",
+      "bp6_charge",
+      "bp7_current",
+      "bp7_voltage",
+      "bp7_max_volt",
+      "bp7_min_volt",
+      "bp7_charge",
+      "bp8_current",
+      "bp8_voltage",
+      "bp8_max_volt",
+      "bp8_min_volt",
+      "bp8_charge",
+      "lmu1_temp1",
+      "lmu1_temp2",
+      "lmu2_temp1",
+      "lmu2_temp2",
+      "reed1",
+      "reed2",
+      "reed3",
+      "reed4",
+      "height",
+      "pressure1",
+      "pressure2",
+      "gapTest1",
+      "gapTest2",
+      "gapTest3",
+      "gapTest4",
+      "speed"
     ].map((topic) => {
       client.subscribe(topic);
     });
@@ -176,8 +226,10 @@ function ServerReceive() {
       console.log('Received "' + message + '" on "' + topic + '"');
       if (topic === "/TAH/BusData") {
         switch (message.toString()[0]) {
-
-          // VELOCITY AND POSITION (AND PRESSURE AND REED)
+          case "2":
+            break;
+          case "4":
+            break;
           case "1":
             setMessage51(message.slice(-1).toString());
             setMessage52(message.slice(-2, -1).toString());
@@ -189,139 +241,98 @@ function ServerReceive() {
             setMessage55(message.slice(2, 5).toString());
             setMessage56(message.slice(6, 9).toString());
             break;
-          
-          // IPM DATA
+          case "3":
+            setMessage2(message.toString());
+            break;
           case "0":
-
-            // BUSBAR VOLTAGE
-            setMessage8((256*parseInt(message.slice(1,4)) + parseInt(message.slice(4,7))).toString());
-
-            // 3- PHASE CURRENT AND TEMP
-            setMessage59(parseInt(message.slice(7,10)));
-            setMessage60(parseInt(message.slice(10,13)));
-            setMessage61(parseInt(message.slice(13,16)));
-            setMessage62(parseInt(message.slice(16,19)));
-            setMessage7(parseInt(message.slice(16,19)));
-
-            // FLAGS
-            setMessage63(parseInt(message.slice(19,22)) & 1);
-            setMessage64((parseInt(message.slice(19,22)) & 2)>>1);
-            setMessage65((parseInt(message.slice(19,22)) & 4)>>2);
-            setMessage66((parseInt(message.slice(19,22)) & 8)>>3);
-
-            // MI and FREQUENCY
-            if (parseInt(message.slice(22,25))>>7 == 0)
-            {
-              setMessage67(parseInt(message.slice(22,25)) & 127);
-            }
-            else
-            {
-              setMessage68((parseInt(message.slice(22,25)) & 127)/100);
-            }
+            setMessage4(
+              (
+                256 * parseInt(message.slice(2, 5)) +
+                parseInt(message.slice(6, 9))
+              ).toString()
+            );
+            setMessage5(message.slice(10, 13).toString());
             break;
-
-          // BMS DATA
+          case "5":
+            setMessage2(message.toString());
+            break;
           case "6":
-            switch (message.toString()[1]) 
-            {
-              // CAN ID 0x012
-              case "0":
-                // PACK VOLTAGE and MIN/MAX CELL VOLTAGES
-                setMessage1(((256*parseInt(message.slice(2,5)) + parseInt(message.slice(5,8)))/10).toString());
-                setMessage43((256*parseInt(message.slice(14,17)) + parseInt(message.slice(17,20))).toString());
-                setMessage46((256*parseInt(message.slice(20,23)) + parseInt(message.slice(23,26))).toString());
-                // PACK CURRENT (WITH SIGN)
-                if (parseInt(message.slice(8,11))>>7 == 1) {
-                  setMessage2((-(~(256*parseInt(message.slice(8,11)) + parseInt(message.slice(11,14))) + 1)<<16>>16)/10);
-                }
-                else
-                {
-                  setMessage2((256*parseInt(message.slice(8,11)) + parseInt(message.slice(11,14)))/10);
-                }
-                break;
-
-              // CAN ID 0x014
-              case "1":
-                // MAX/MIN PACK TEMPS
-                setMessage37(parseInt(message.slice(2,5)).toString());
-                setMessage40(parseInt(message.slice(5,8)).toString());
-                // SOC
-                setMessage49(parseInt(message.slice(8,11)).toString());
-                // LMU TEMPS
-                switch (parseInt(message.slice(11,14))) 
-                {
-                  case 1:
-                    setMessage23(parseInt(message.slice(14,17)).toString());
-                    setMessage24(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 2:
-                    setMessage26(parseInt(message.slice(14,17)).toString());
-                    setMessage27(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 3:
-                    setMessage29(parseInt(message.slice(14,17)).toString());
-                    setMessage30(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 4:
-                    setMessage32(parseInt(message.slice(14,17)).toString());
-                    setMessage33(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 5:
-                    setMessage35(parseInt(message.slice(14,17)).toString());
-                    setMessage36(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 6:
-                    setMessage38(parseInt(message.slice(14,17)).toString());
-                    setMessage39(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 7:
-                    setMessage41(parseInt(message.slice(14,17)).toString());
-                    setMessage42(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 8:
-                    setMessage44(parseInt(message.slice(14,17)).toString());
-                    setMessage45(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 9:
-                    setMessage47(parseInt(message.slice(14,17)).toString());
-                    setMessage48(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 10:
-                    setMessage25(parseInt(message.slice(14,17)).toString());
-                    setMessage28(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 11:
-                    setMessage31(parseInt(message.slice(14,17)).toString());
-                    setMessage34(parseInt(message.slice(17,20)).toString());
-                    break;
-                  case 12:
-                    setMessage57(parseInt(message.slice(14,17)).toString());
-                    setMessage58(parseInt(message.slice(17,20)).toString());
-                    break;
-                }
-                break;
-            }
+            setMessage2(message.toString());
             break;
-          
-          // UNCOMMENT TO GET LEV DATA
-          //case "3":
-            //setMessage2(message.toString());
-            break;
-          //case "2":
-          
-            break;
-          //case "4":
-            
-            break;
-          //case "5":
-            //setMessage2(message.toString());
-            break;
-
           default:
             break;
         }
       }
-      
+      if (topic === "topic2") {
+        setMessage2(message.toString());
+      }
+      if (topic === "height") {
+        setMessage3(message.toString());
+      }
+      if (topic === "/TAH/VGapFDataRx") {
+        setMessage3(
+          message.slice(6, 8) + "." + message.slice(9, 11).toString()
+        );
+      }
+      if (topic === "speed") {
+        setMessage4(message.toString());
+      }
+      if (topic === "position") {
+        setMessage5(message.toString());
+      }
+      if (topic === "emsTemp") {
+        setMessage6(message.toString());
+      }
+      if (topic === "limTemp") {
+        setMessage7(message.toString());
+      }
+      if (topic === "busbarVoltage") {
+        setMessage8(message.toString());
+      }
+      if (topic === "/TAH/VGapFDataRx") {
+        setMessage9(
+          (message.slice(0, 2) + "." + message.slice(3, 5)).toString()
+        );
+      }
+      if (topic === "/TAH/VGapFDataRx") {
+        setMessage10(
+          (message.slice(6, 8) + "." + message.slice(9, 11)).toString()
+        );
+      }
+      if (topic === "/TAH/VGapBDataRx") {
+        setMessage11(
+          (message.slice(0, 2) + "." + message.slice(3, 5)).toString()
+        );
+      }
+      if (topic === "/TAH/VGapBDataRx") {
+        setMessage12(
+          (message.slice(6, 8) + "." + message.slice(9, 11)).toString()
+        );
+      }
+      if (topic === "VLev_gapsen_1") {
+        setMessage13(message.toString());
+      }
+      if (topic === "VLev_gapsen_2") {
+        setMessage14(message.toString());
+      }
+      if (topic === "VLev_gapsen_3") {
+        setMessage15(message.toString());
+      }
+      if (topic === "VLev_gapsen_4") {
+        setMessage16(message.toString());
+      }
+      if (topic === "VLev_tempsen_1") {
+        setMessage17(message.toString());
+      }
+      if (topic === "VLev_tempsen_2") {
+        setMessage18(message.toString());
+      }
+      if (topic === "VLev_tempsen_3") {
+        setMessage19(message.toString());
+      }
+      if (topic === "VLev_tempsen_4") {
+        setMessage20(message.toString());
+      }
       if (topic === "/TAH/fault") {
         setMessage21(message.toString());
         data.errors = data.errors
@@ -365,6 +376,108 @@ function ServerReceive() {
           : [{ date: new Date(), message: message.toString() }];
         console.log(data.messages);
         play(msgsound);
+      }
+      if (topic === "bp1_current") {
+        setMessage23(message.toString());
+      }
+      if (topic === "bp1_voltage") {
+        setMessage24(message.toString());
+      }
+      if (topic === "bp1_charge") {
+        setMessage25(message.toString());
+      }
+      if (topic === "bp2_current") {
+        setMessage26(message.toString());
+      }
+      if (topic === "bp2_voltage") {
+        setMessage27(message.toString());
+      }
+      if (topic === "bp2_charge") {
+        setMessage28(message.toString());
+      }
+      if (topic === "bp3_current") {
+        setMessage29(message.toString());
+      }
+      if (topic === "bp3_voltage") {
+        setMessage30(message.toString());
+      }
+      if (topic === "bp3_charge") {
+        setMessage31(message.toString());
+      }
+      if (topic === "bp4_current") {
+        setMessage32(message.toString());
+      }
+      if (topic === "bp4_voltage") {
+        setMessage33(message.toString());
+      }
+      if (topic === "bp4_charge") {
+        setMessage34(message.toString());
+      }
+      if (topic === "bp5_current") {
+        setMessage35(message.toString());
+      }
+      if (topic === "bp5_voltage") {
+        setMessage36(message.toString());
+      }
+      if (topic === "bp5_charge") {
+        setMessage37(message.toString());
+      }
+      if (topic === "bp6_current") {
+        setMessage38(message.toString());
+      }
+      if (topic === "bp6_voltage") {
+        setMessage39(message.toString());
+      }
+      if (topic === "bp6_charge") {
+        setMessage40(message.toString());
+      }
+      if (topic === "bp7_current") {
+        setMessage41(message.toString());
+      }
+      if (topic === "bp7_voltage") {
+        setMessage42(message.toString());
+      }
+      if (topic === "bp7_charge") {
+        setMessage43(message.toString());
+      }
+      if (topic === "bp8_current") {
+        setMessage44(message.toString());
+      }
+      if (topic === "bp8_voltage") {
+        setMessage45(message.toString());
+      }
+      if (topic === "bp8_charge") {
+        setMessage46(message.toString());
+      }
+      if (topic === "lmu1_temp1") {
+        setMessage47(message.toString());
+      }
+      if (topic === "lmu1_temp2") {
+        setMessage48(message.toString());
+      }
+      if (topic === "lmu2_temp1") {
+        setMessage49(message.toString());
+      }
+      if (topic === "lmu2_temp2") {
+        setMessage50(message.toString());
+      }
+      if (topic === "reed1") {
+        setMessage51(message.toString());
+      }
+      if (topic === "reed2") {
+        setMessage52(message.toString());
+      }
+      if (topic === "reed3") {
+        setMessage53(message.toString());
+      }
+      if (topic === "reed4") {
+        setMessage54(message.toString());
+      }
+      if (topic === "pressure1") {
+        setMessage55(message.toString());
+      }
+      if (topic === "pressure2") {
+        setMessage56(message.toString());
       }
     });
   });
@@ -439,9 +552,6 @@ function ServerReceive() {
                 position={message5}
                 emsTemp={message6}
                 limTemp={message7}
-                busbarVoltage={message8}
-                sinefreq = {message67}
-                modindex = {message68}
                 client={client}
                 reed1={message51}
                 reed2={message52}
@@ -449,13 +559,26 @@ function ServerReceive() {
                 reed4={message54}
                 pressure1={message55}
                 pressure2={message56}
-                packvoltage={message1}
-                packcurrent={message2}
-                maxpacktemp={message37}
-                minpacktemp = {message40}
-                maxcellvoltage = {message43}
-                mincellvoltage = {message46}
-                soc = {message49}
+                packvoltage={getMinimumNumber([
+                  message24,
+                  message27,
+                  message30,
+                  message33,
+                  message36,
+                  message39,
+                  message42,
+                  message45,
+                ])}
+                packcurrent={getMinimumNumber([
+                  message23,
+                  message26,
+                  message29,
+                  message32,
+                  message35,
+                  message38,
+                  message41,
+                  message44,
+                ])}
               />
             </Route>
             <Route exact path="/data/levitation">
@@ -475,69 +598,57 @@ function ServerReceive() {
               />
             </Route>
             <Route exact path="/data/propulsion">
-              <Propulsion 
-              speed={message4}
-              busbarVoltage={message8} 
-              ipmdata = {{
-                Ia: message59,
-                Ib: message60,
-                Ic: message61,
-                ipmtemp: message62,
-                overtemp: message66,
-                Ia_error: message63,
-                Ib_error: message64,
-                Ic_error: message65,
-              }} />
+              <Propulsion speed={message4} busbarVoltage={message8} />
             </Route>
             <Route exact path="/data/battery">
               <Battery
+                bp1={{
+                  current: message23,
+                  voltage: message24,
+                  state_of_charge: message25,
+                }}
+                bp2={{
+                  current: message26,
+                  voltage: message27,
+                  state_of_charge: message28,
+                }}
+                bp3={{
+                  current: message29,
+                  voltage: message30,
+                  state_of_charge: message31,
+                }}
+                bp4={{
+                  current: message32,
+                  voltage: message33,
+                  state_of_charge: message34,
+                }}
+                bp5={{
+                  current: message35,
+                  voltage: message36,
+                  state_of_charge: message37,
+                }}
+                bp6={{
+                  current: message38,
+                  voltage: message39,
+                  state_of_charge: message40,
+                }}
+                bp7={{
+                  current: message41,
+                  voltage: message42,
+                  state_of_charge: message43,
+                }}
+                bp8={{
+                  current: message44,
+                  voltage: message45,
+                  state_of_charge: message46,
+                }}
                 lmu1={{
-                  temp1: message23,
-                  temp2: message24,
-                }}
-                lmu2={{
-                  temp1: message26,
-                  temp2: message27,
-                }}
-                lmu3={{
-                  temp1: message29,
-                  temp2: message30,
-                }}
-                lmu4={{
-                  temp1: message32,
-                  temp2: message33,
-                }}
-                lmu5={{
-                  temp1: message35,
-                  temp2: message36,
-                }}
-                lmu6={{
-                  temp1: message38,
-                  temp2: message39,
-                }}
-                lmu7={{
-                  temp1: message41,
-                  temp2: message42,
-                }}
-                lmu8={{
-                  temp1: message44,
-                  temp2: message45,
-                }}
-                lmu9={{
                   temp1: message47,
                   temp2: message48,
                 }}
-                lmu10={{
-                  temp1: message25,
-                  temp2: message28,
-                }}
-                lmu11={{
-                  temp1: message31,
-                  temp2: message34,
-                }}
-                lmu12={{
-                  temp1: message57,
-                  temp2: message58,
+                lmu2={{
+                  temp1: message49,
+                  temp2: message50,
                 }}
               />
             </Route>

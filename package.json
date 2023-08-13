@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@coreui/react-chartjs": "^2.1.3",
     "bootstrap": "^5.2.3",
     "framer-motion": "^4.1.17",
     "mqtt": "^4.3.7",
